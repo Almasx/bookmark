@@ -1,0 +1,4 @@
+1 use framer motion classes and get rid off ease out
+2 change font to helvetiva neue DONE
+3 makes card squishyy and rubberband
+4 make squircles

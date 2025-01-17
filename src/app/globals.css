@@ -2,20 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+@layer base {
+  .chip {
+    @apply scale-110 flex justify-center rounded-full bg-neutral-100 items-center w-11 h-6 text-neutral-700 font-medium duration-200 ease-out;
+  }
+  :root {
+    --radius: 0.5rem;
+  }
 }
