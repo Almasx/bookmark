@@ -1,28 +1,10 @@
-import { AddLink, LinkList } from "~/features/link";
+import { db } from "~/lib/db";
+import Home from "./page.client";
 
-export default function Home() {
-  return (
-    <div className="max-w-80 mx-auto pt-24">
-      <Header />
-      <LinkList />
-      <AddLink />
-    </div>
-  );
+export default async function Page() {
+  const links = await db.link.findMany({
+    include: { tags: true },
+  });
+
+  return <Home links={links} />;
 }
-
-const Header = () => {
-  return (
-    <div className="flex mb-10 sticky justify-between">
-      <div className="flex items-center gap-2">
-        <div className="grid place-items-center text-sm bg-white size-5 rounded-full">
-          🧠
-        </div>
-        Almas
-      </div>
-
-      <div className="grid place-items-center text-sm bg-white size-5 rounded-full">
-        🧠
-      </div>
-    </div>
-  );
-};
