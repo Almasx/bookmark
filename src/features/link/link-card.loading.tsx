@@ -1,6 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import type { Tag } from "@prisma/client";
 
 // Programmatically generate emoji ranges
 const generateEmojis = () => {
@@ -32,11 +31,7 @@ const ANIMATION_VARIANTS = {
 };
 const SHUFFLE_INTERVAL = 1000;
 
-interface LoadingLinkCardProps {
-  finalTags?: Tag[];
-}
-
-export const LoadingLinkCard = ({ finalTags }: LoadingLinkCardProps) => {
+export const LoadingLinkCard = () => {
   const [currentEmojis, setCurrentEmojis] = useState<string[]>([
     EMOJIS[0],
     EMOJIS[1],
@@ -44,12 +39,6 @@ export const LoadingLinkCard = ({ finalTags }: LoadingLinkCardProps) => {
   ]);
 
   useEffect(() => {
-    // If we have final tags, use those emojis
-    if (finalTags) {
-      setCurrentEmojis(finalTags.slice(0, 3).map((tag) => tag.emoji));
-      return;
-    }
-
     // Otherwise keep shuffling
     const interval = setInterval(() => {
       setCurrentEmojis([
@@ -60,7 +49,7 @@ export const LoadingLinkCard = ({ finalTags }: LoadingLinkCardProps) => {
     }, SHUFFLE_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [finalTags]);
+  }, []);
 
   return (
     <motion.div

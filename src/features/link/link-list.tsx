@@ -4,12 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LinkCard } from "./link-card";
 import { LoadingLinkCard } from "./link-card.loading";
 import type { LinkWithTags } from "~/lib/types";
-import type { Tag } from "@prisma/client";
 
 interface LinkListProps {
   links: LinkWithTags[];
   isLoading: boolean;
-  finalTags?: Tag[];
 }
 
 const TRANSITION = { type: "spring", duration: 0.5, bounce: 0.4 };
@@ -19,7 +17,7 @@ const ANIMATION_VARIANTS = {
   exit: { opacity: 0, y: -50 },
 };
 
-export const LinkList = ({ links, isLoading, finalTags }: LinkListProps) => {
+export const LinkList = ({ links, isLoading }: LinkListProps) => {
   return (
     <div className="flex gap-1 flex-col">
       <AnimatePresence mode="popLayout">
@@ -32,7 +30,7 @@ export const LinkList = ({ links, isLoading, finalTags }: LinkListProps) => {
             exit="exit"
             transition={TRANSITION}
           >
-            <LoadingLinkCard finalTags={finalTags} />
+            <LoadingLinkCard />
           </motion.div>
         )}
         {links.map((link, index) => (
