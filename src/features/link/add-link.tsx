@@ -5,6 +5,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogFooter } from "~/components/dialog";
 import { Button } from "~/components/button";
+import { TextArea } from "~/components/textarea";
 
 interface AddLinkProps {
   onAdd: (url: string) => void;
@@ -20,18 +21,13 @@ export const AddLink = ({ onAdd }: AddLinkProps) => {
     setIsOpen(true);
   };
 
-  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    const text = e.clipboardData.getData("text");
+  const handlePaste = (text: string) => {
     setUrl(text);
     setIsOpen(true);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const target = e.target;
-    target.style.height = "auto";
-    target.style.height = `${target.scrollHeight}px`;
-
-    setUrl(target.value);
+  const handleInputChange = (text: string) => {
+    setUrl(text);
   };
 
   const handleSubmit = () => {
@@ -53,12 +49,12 @@ export const AddLink = ({ onAdd }: AddLinkProps) => {
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-80">
-          <textarea
+          <TextArea
             value={url}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="Add here a link or something"
-            className="w-full resize-none overflow-hidden outline-none rounded-lg pt-0.5 pl-1 min-h-[100px]"
+            className="rounded-lg pt-0.5 pl-1 min-h-[100px]"
             autoFocus
           />
 
@@ -83,9 +79,8 @@ export const AddLink = ({ onAdd }: AddLinkProps) => {
         </div>
         <div className="bg-neutral-100 shadow-sm w-full">
           <div className="bg-white w-full px-4 py-5 rounded-t-2xl h-52">
-            <textarea
+            <TextArea
               placeholder="Add a link"
-              className="w-full resize-none overflow-hidden outline-none placeholder:text-neutral-400"
               value={""}
               onPaste={handlePaste}
               onChange={handleAddLink}
