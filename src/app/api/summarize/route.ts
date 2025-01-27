@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { generateObject } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { groq } from "@ai-sdk/groq";
 import { JSDOM } from "jsdom";
 import { db } from "~/lib/db";
 
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 
     // Use AI to analyze content and generate structured data
     const { object } = await generateObject({
-      model: openai("gpt-4o-mini"),
+      model: groq("llama-3.1-8b-instant"),
       schema: linkSchema,
       prompt: `Analyze this content from ${url} and extract:
       1. A concise title
