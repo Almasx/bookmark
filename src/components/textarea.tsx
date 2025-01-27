@@ -12,6 +12,7 @@ type TextAreaProps = Omit<
 
 export const TextArea = (props: TextAreaProps) => {
   const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    e.preventDefault();
     const text = e.clipboardData.getData("text");
     props.onPaste?.(text);
   };

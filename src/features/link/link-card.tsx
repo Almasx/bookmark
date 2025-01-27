@@ -4,8 +4,11 @@ import { Icon, ICONS } from "~/components/icon";
 import NextLink from "next/link";
 import { LinkWithTags } from "~/lib/types";
 import { EditLink } from "./edit-link";
+import { DeleteChip } from "~/features/delete";
 
-type LinkCardProps = LinkWithTags;
+type LinkCardProps = LinkWithTags & {
+  onDelete: (id: string) => void;
+};
 
 const cardVariants = {
   extended: {
@@ -19,7 +22,7 @@ const cardVariants = {
 };
 
 export const LinkCard = (link: LinkCardProps) => {
-  const { title, url, readingTime, tags } = link;
+  const { title, url, readingTime, tags, onDelete } = link;
 
   return (
     <MotionConfig transition={{ type: "spring", duration: 0.15, bounce: 0 }}>
@@ -43,8 +46,13 @@ export const LinkCard = (link: LinkCardProps) => {
               </div>
             </div>
 
-            <div className="flex justify-between">
-              <NextLink href={url} target="_blank" rel="noopener noreferrer">
+            <div className="flex gap-2">
+              <NextLink
+                className="mr-auto"
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <motion.div
                   className="chip text-neutral-500 group-hover:text-white group-hover:scale-105 group-hover:bg-primary-500"
                   layout
@@ -53,9 +61,11 @@ export const LinkCard = (link: LinkCardProps) => {
                 </motion.div>
               </NextLink>
 
-              <div className="chip w-fit px-2 font-medium">
+              <div className="chip w-fit px-2 font-medium text-neutral-500">
                 {readingTime}mins
               </div>
+
+              <DeleteChip link={link} onDelete={onDelete} />
             </div>
           </motion.div>
         )}

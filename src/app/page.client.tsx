@@ -26,9 +26,13 @@ export default function Home({ links: initialLinks }: HomeProps) {
     execute({ url });
   };
 
+  const handleDelete = (id: string) => {
+    setLinks((prevLinks) => prevLinks.filter((link) => link.id !== id));
+  };
+
   return (
     <div className="max-w-80 mx-auto pt-24">
-      <LinkList links={links} isLoading={isExecuting} />
+      <LinkList links={links} isLoading={isExecuting} onDelete={handleDelete} />
       <AddLink onAdd={handleAddLink} />
     </div>
   );

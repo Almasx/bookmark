@@ -54,7 +54,7 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
             }}
             exit={{ opacity: 0 }}
           >
-            <LinkNote />
+            <LinkSummary summary={link.summary} />
           </motion.div>
         )}
 
@@ -63,19 +63,16 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
           <motion.div
             key="tags"
             className="absolute z-20 top-0 w-full flex-col flex gap-2 py-1"
+            initial={{ x: 12 + bounds.width, opacity: 0 }}
+            animate={{
+              x: 12 + bounds.width,
+              opacity: 1,
+              transition: { delay: 0.15 },
+            }}
+            exit={{ opacity: 0 }}
           >
-            {link.tags.map((tag, index) => (
-              <Tag
-                initial={{ x: 12 + bounds.width, opacity: 0 }}
-                animate={{
-                  x: 12 + bounds.width,
-                  opacity: 1,
-                  transition: { delay: 0.15 + 0.01 * index },
-                }}
-                exit={{ opacity: 0 }}
-                key={tag.id}
-                tag={tag}
-              />
+            {link.tags.map((tag) => (
+              <Tag key={tag.id} tag={tag} />
             ))}
           </motion.div>
         )}
@@ -84,15 +81,19 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
   );
 };
 
-const LinkNote = () => {
-  const [note, setNote] = useState("");
+interface LinkSummaryProps {
+  summary: string;
+}
+
+const LinkSummary = ({ summary: initialSummary }: LinkSummaryProps) => {
+  const [summary, setSummary] = useState(initialSummary);
 
   return (
     <div className="bg-white p-4 rounded-3xl w-full">
       <TextArea
-        value={note}
+        value={summary}
         rows={4}
-        onChange={setNote}
+        onChange={setSummary}
         className="bg-white"
         placeholder="Add a note here..."
       />
