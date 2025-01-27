@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && prisma generate",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "db:flush": "prisma db execute --file ./prisma/flush-db.sql"
+    "db:flush": "prisma db execute --file ./prisma/flush-db.sql",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@ai-sdk/groq": "^1.0.12",
