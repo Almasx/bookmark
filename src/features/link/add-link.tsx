@@ -7,18 +7,30 @@ import { Dialog, DialogContent, DialogFooter } from "~/components/dialog";
 import { Button } from "~/components/button";
 import { TextArea } from "~/components/textarea";
 import { isValidUrl } from "./utils";
+import { useAction } from "next-safe-action/hooks";
+import { toast } from "sonner";
+import { useLinks } from "./link-store";
+import { addLink as addLinkAction } from "./api.action";
 
-interface AddLinkProps {
-  onAdd: (url: string) => void;
-}
-
-export const AddLink = ({ onAdd }: AddLinkProps) => {
+export const AddLink = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [url, setUrl] = useState("");
 
-  const linkValid = useMemo(() => {
-    return isValidUrl(url.trim());
-  }, [url]);
+  const addLink = useLinks((state) => state.addLink);
+  const updateStatus = useLinks((state) => state.updateStatus);
+
+  const { execute } = useAction(addLinkAction, {
+    onSuccess: (result) => {
+      if (result?.data) {
+        addLink(result.data.link);
+        updateStatus("idle");
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Oops! Something broke");
+    },
+  });
 
   const handleAddLink = () => {
     setIsOpen(true);
@@ -35,8 +47,10 @@ export const AddLink = ({ onAdd }: AddLinkProps) => {
 
   const handleSubmit = () => {
     if (!url.trim()) return;
+    if (!isValidUrl(url.trim())) return;
 
-    onAdd(url.trim());
+    updateStatus("adding_link");
+    execute({ url: url.trim() });
     setIsOpen(false);
     setUrl("");
   };
@@ -47,6 +61,10 @@ export const AddLink = ({ onAdd }: AddLinkProps) => {
       handleSubmit();
     }
   };
+
+  const linkValid = useMemo(() => {
+    return isValidUrl(url.trim());
+  }, [url]);
 
   return (
     <>
@@ -75,7 +93,7 @@ export const AddLink = ({ onAdd }: AddLinkProps) => {
       </Dialog>
 
       <motion.div
-        className="flex flex-col group items-center fixed -bottom-10 w-80"
+        className="flex flex-col group items-center fixed -bottom-10 sm:w-80 w-full"
         initial={{ y: 0 }}
         animate={{ y: 0 }}
         whileHover={{ y: -40 }}

@@ -4,9 +4,8 @@ import { ICONS } from "~/components/icon";
 import { howManyDaysAgo } from "./utils";
 import { motion } from "motion/react";
 import { useAction } from "next-safe-action/hooks";
-import { deleteLink } from "~/app/action";
-import { useContext } from "react";
-import { LinksContext, type LinksContextProps } from "~/app/page.client";
+import { deleteLink as deleteLinkAction } from "./api.action";
+import { useLinks } from "../link/link-store";
 
 interface DeleteChipProps {
   link: Link;
@@ -14,15 +13,15 @@ interface DeleteChipProps {
 
 export const DeleteChip = ({ link }: DeleteChipProps) => {
   const daysAgo = howManyDaysAgo(new Date(link.createdAt));
-  const { setLinks } = useContext<LinksContextProps>(LinksContext);
+  const deleteLink = useLinks((state) => state.deleteLink);
 
-  const { execute } = useAction(deleteLink);
+  const { execute } = useAction(deleteLinkAction);
 
   const handleDelete = async (e: React.MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
     execute({ id: link.id });
 
-    setLinks((prevLinks) => prevLinks.filter((l) => l.id !== link.id));
+    deleteLink(link.id);
   };
 
   return (

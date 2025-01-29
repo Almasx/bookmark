@@ -2,11 +2,11 @@ import { TagChip } from "~/features/tag";
 import { motion, MotionConfig } from "framer-motion";
 import { Icon, ICONS } from "~/components/icon";
 import NextLink from "next/link";
-import { LinkWithTags } from "~/lib/types";
+import { Link } from "~/features/link/types";
 import { EditLink } from "./edit-link";
 import { DeleteChip } from "~/features/delete";
 
-type LinkCardProps = LinkWithTags;
+type LinkCardProps = Link;
 
 const cardVariants = {
   extended: {
