@@ -63,3 +63,15 @@ export const deleteLink = actionClient
     const link = await db.link.delete({ where: { id } });
     return { link };
   });
+
+const updateLinkSummarySchema = z.object({
+  id: z.string(),
+  summary: z.string(),
+});
+
+export const updateLinkSummary = actionClient
+  .schema(updateLinkSummarySchema)
+  .action(async ({ parsedInput: { id, summary } }) => {
+    const link = await db.link.update({ where: { id }, data: { summary } });
+    return { link };
+  });

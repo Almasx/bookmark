@@ -18,3 +18,7 @@ body {
 * {
   @apply tracking-tight;
 }
+
+[aria-label="Notifications alt+T"] ol {
+  --width: 200px !important;
+}

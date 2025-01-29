@@ -1,11 +1,12 @@
 "use client";
 
 import { ChevronUp } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { Dialog, DialogContent, DialogFooter } from "~/components/dialog";
 import { Button } from "~/components/button";
 import { TextArea } from "~/components/textarea";
+import { isValidUrl } from "./utils";
 
 interface AddLinkProps {
   onAdd: (url: string) => void;
@@ -15,12 +16,16 @@ export const AddLink = ({ onAdd }: AddLinkProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [url, setUrl] = useState("");
 
+  const linkValid = useMemo(() => {
+    return isValidUrl(url.trim());
+  }, [url]);
+
   const handleAddLink = () => {
     setIsOpen(true);
   };
 
   const handlePaste = (text: string) => {
-    setUrl((t) => t + text);
+    setUrl(text);
     setIsOpen(true);
   };
 
@@ -52,13 +57,17 @@ export const AddLink = ({ onAdd }: AddLinkProps) => {
             onChange={handleInputChange}
             onPaste={handlePaste}
             onKeyDown={handleKeyDown}
-            placeholder="Add here a link or something"
+            placeholder="https://example.com"
             className="rounded-lg pt-0.5 pl-1 min-h-[100px]"
             autoFocus
           />
 
           <DialogFooter>
-            <Button variant="primary" onClick={handleSubmit}>
+            <Button
+              variant="primary"
+              onClick={handleSubmit}
+              disabled={!linkValid}
+            >
               Add link
             </Button>
           </DialogFooter>

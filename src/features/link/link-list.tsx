@@ -8,7 +8,6 @@ import type { LinkWithTags } from "~/lib/types";
 interface LinkListProps {
   links: LinkWithTags[];
   isLoading: boolean;
-  onDelete: (id: string) => void;
 }
 
 const TRANSITION = { type: "spring", duration: 0.5, bounce: 0.4 };
@@ -26,7 +25,7 @@ const ANIMATION_VARIANTS = {
   },
 };
 
-export const LinkList = ({ links, isLoading, onDelete }: LinkListProps) => {
+export const LinkList = ({ links, isLoading }: LinkListProps) => {
   return (
     <div className="flex gap-1 flex-col">
       <AnimatePresence mode="popLayout">
@@ -54,7 +53,7 @@ export const LinkList = ({ links, isLoading, onDelete }: LinkListProps) => {
               delay: index * 0.01,
             }}
           >
-            <LinkCard {...link} onDelete={onDelete} />
+            <LinkCard {...link} />
           </motion.div>
         ))}
       </AnimatePresence>

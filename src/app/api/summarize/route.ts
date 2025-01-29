@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       schema: linkSchema,
       prompt: `Analyze this content from ${url} and extract:
       1. A concise title
-      2. A brief summary (max 1000 characters)
+      2. A brief summary like cheatsheet (max 1000 characters)
       3. The main content
       4. Estimated reading time in minutes (for videos, use the duration)
       5. Suggest relevant tags with appropriate emojis (max 5 tags)
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
       data: {
         url,
         title: object.metadata.title,
-        summary: object.metadata.summary,
+        summary: object.metadata.summary + "\n\n",
         content: object.metadata.content,
         readingTime: object.metadata.readingTime,
         tags: {
