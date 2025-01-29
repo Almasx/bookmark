@@ -20,7 +20,7 @@ const cardVariants = {
 };
 
 export const LinkCard = (link: LinkCardProps) => {
-  const { title, url, readingTime, tags } = link;
+  const { title, url, readingTime, tags, isArchived } = link;
 
   return (
     <MotionConfig transition={{ type: "spring", duration: 0.15, bounce: 0 }}>
@@ -66,7 +66,7 @@ export const LinkCard = (link: LinkCardProps) => {
                   {readingTime}mins
                 </div>
 
-                <DeleteChip link={link} />
+                {!isArchived && <DeleteChip link={link} />}
               </div>
             </motion.div>
           );

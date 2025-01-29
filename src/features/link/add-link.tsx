@@ -93,7 +93,7 @@ export const AddLink = () => {
       </Dialog>
 
       <motion.div
-        className="flex flex-col group items-center fixed -bottom-10 sm:w-80 w-full"
+        className="flex flex-col group items-center fixed -bottom-10 sm:w-80 w-full sm:px-0 px-4"
         initial={{ y: 0 }}
         animate={{ y: 0 }}
         whileHover={{ y: -40 }}
