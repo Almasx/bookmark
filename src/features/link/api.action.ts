@@ -1,9 +1,11 @@
-import { NextResponse } from "next/server";
+"use server";
+
+import { actionClient } from "~/lib/safe-action";
 import { z } from "zod";
+import { db } from "~/lib/db";
+import { JSDOM } from "jsdom";
 import { generateObject } from "ai";
 import { groq } from "@ai-sdk/groq";
-import { JSDOM } from "jsdom";
-import { db } from "~/lib/db";
 
 const linkSchema = z.object({
   metadata: z.object({
@@ -20,19 +22,18 @@ const linkSchema = z.object({
   }),
 });
 
-const inputSchema = z.object({
-  url: z.string(),
+const addLinkSchema = z.object({
+  url: z.string().url(),
 });
 
-export async function POST(req: Request) {
-  try {
-    const { url } = inputSchema.parse(await req.json());
+export const addLink = actionClient
+  .schema(addLinkSchema)
+  .action(async ({ parsedInput: { url }, ctx }) => {
+    // First get the database user
+    const dbUser = await db.user.findUniqueOrThrow({
+      where: { clerkUserId: ctx.user.id },
+    });
 
-    if (!url) {
-      return NextResponse.json({ error: "URL is required" }, { status: 400 });
-    }
-
-    // Extract content from URL
     const content = await extractContent(url);
     console.log(`DEBUG: Loaded content: ${content}`);
 
@@ -42,7 +43,7 @@ export async function POST(req: Request) {
       schema: linkSchema,
       prompt: `Analyze this content from ${url} and extract:
       1. A concise title
-      2. A brief summary (max 1000 characters)
+      2. A brief summary like cheatsheet (max 1000 characters)
       3. The main content
       4. Estimated reading time in minutes (for videos, use the duration)
       5. Suggest relevant tags with appropriate emojis (max 5 tags)
@@ -58,9 +59,10 @@ export async function POST(req: Request) {
       data: {
         url,
         title: object.metadata.title,
-        summary: object.metadata.summary,
+        summary: object.metadata.summary + "\n\n",
         content: object.metadata.content,
         readingTime: object.metadata.readingTime,
+        userId: dbUser.id,
         tags: {
           connectOrCreate: object.metadata.suggestedTags.map((tag) => ({
             where: { title: tag.title },
@@ -71,29 +73,35 @@ export async function POST(req: Request) {
           })),
         },
       },
-      include: {
-        tags: true,
-      },
+      include: { tags: true },
     });
 
-    return NextResponse.json({
-      success: true,
-      data: savedLink,
-    });
-  } catch (error) {
-    console.error("Error processing URL:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error:
-          error instanceof Error ? error.message : "An unknown error occurred",
-      },
-      { status: 500 }
-    );
-  }
-}
+    return { link: savedLink };
+  });
 
-async function extractContent(url: string): Promise<string> {
+const updateLinkSchema = z.object({
+  id: z.string(),
+  summary: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  url: z.string().optional(),
+  title: z.string().optional(),
+});
+
+export const updateLink = actionClient
+  .schema(updateLinkSchema)
+  .action(async ({ parsedInput: data }) => {
+    const link = await db.link.update({
+      where: { id: data.id },
+      data: {
+        ...data,
+        tags: { connect: data.tags?.map((tag) => ({ id: tag })) },
+      },
+      include: { tags: true },
+    });
+    return { link };
+  });
+
+export async function extractContent(url: string): Promise<string> {
   const response = await fetch(url);
   const html = await response.text();
   const dom = new JSDOM(html);

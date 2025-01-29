@@ -34,6 +34,12 @@ export const TextArea = (props: TextAreaProps) => {
       )}
       onPaste={handlePaste}
       onChange={handleInputChange}
+      ref={(el) => {
+        if (el) {
+          el.style.height = "auto";
+          el.style.height = `${el.scrollHeight}px`;
+        }
+      }}
     />
   );
 };

@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { LinkWithTags } from "~/lib/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMeasure } from "react-use";
 import * as React from "react";
 import { TextArea } from "~/components/textarea";
 import { Tag } from "~/features/tag";
+import { useAction } from "next-safe-action/hooks";
+import { updateLink as updateLinkAction } from "~/features/link/api.action";
+import { Link } from "./types";
+import { useLinks } from "./link-store";
 
 interface EditLinkProps {
-  link: LinkWithTags;
+  link: Link;
   children: (props: { editing: boolean }) => React.ReactNode;
 }
 
@@ -54,7 +57,7 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
             }}
             exit={{ opacity: 0 }}
           >
-            <LinkSummary summary={link.summary} />
+            <LinkSummary link={link} />
           </motion.div>
         )}
 
@@ -63,7 +66,7 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
           <motion.div
             key="tags"
             className="absolute z-20 top-0 w-full flex-col flex gap-2 py-1"
-            initial={{ x: 12 + bounds.width, opacity: 0 }}
+            initial={{ x: 16 + bounds.width, opacity: 0 }}
             animate={{
               x: 12 + bounds.width,
               opacity: 1,
@@ -82,19 +85,49 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
 };
 
 interface LinkSummaryProps {
-  summary: string;
+  link: Link;
 }
 
-const LinkSummary = ({ summary: initialSummary }: LinkSummaryProps) => {
-  const [summary, setSummary] = useState(initialSummary);
+const LinkSummary = ({ link }: LinkSummaryProps) => {
+  const [summary, setSummary] = useState(link?.summary || "");
+
+  const { execute } = useAction(updateLinkAction);
+  const updateLink = useLinks((state) => state.updateLink);
+
+  if (!link) return null;
+
+  const handleChange = (text: string) => {
+    setSummary(text);
+  };
+
+  const handlePaste = (text: string) => {
+    setSummary((t) => t + text);
+  };
+
+  const handleBlur = () => {
+    if (summary === link.summary) return;
+    execute({ id: link.id, summary });
+    updateLink({ id: link.id, summary });
+  };
+
+  const handleFocus = (el: HTMLTextAreaElement | null) => {
+    if (!el) return;
+
+    el.focus();
+    el.selectionStart = el.value.length;
+    el.selectionEnd = el.value.length;
+  };
 
   return (
-    <div className="bg-white p-4 rounded-3xl w-full">
+    <div className="bg-white p-3 pt-[10px] rounded-3xl w-full">
+      <p className="chip px-2 w-fit text-neutral-500 mb-2 text-sm">Summary</p>
       <TextArea
         value={summary}
-        rows={4}
-        onChange={setSummary}
-        className="bg-white"
+        onChange={handleChange}
+        onPaste={handlePaste}
+        onBlur={handleBlur}
+        ref={handleFocus}
+        className="bg-white text-neutral-600 "
         placeholder="Add a note here..."
       />
     </div>

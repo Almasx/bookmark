@@ -1,39 +1,34 @@
 "use client";
 
-import { useAction } from "next-safe-action/hooks";
-import { AddLink, LinkList } from "~/features/link";
-import { addLink } from "./action";
-import type { LinkWithTags } from "~/lib/types";
-import { useState } from "react";
+import { SignOutButton as ClerkSignOutButton } from "@clerk/nextjs";
+import { Button } from "~/components/button";
+import { AddLink, LinkList, LinksProvider } from "~/features/link";
+
+import type { Link } from "~/features/link/types";
 
 interface HomeProps {
-  links: LinkWithTags[];
+  links: Link[];
 }
 
-export default function Home({ links: initialLinks }: HomeProps) {
-  const [links, setLinks] = useState<LinkWithTags[]>(initialLinks);
-
-  const { execute, isExecuting } = useAction(addLink, {
-    onSuccess: (result) => {
-      const link = result.data?.link;
-      if (link?.tags) {
-        setLinks((prevLinks) => [link!, ...prevLinks]);
-      }
-    },
-  });
-
-  const handleAddLink = async (url: string) => {
-    execute({ url });
-  };
-
-  const handleDelete = (id: string) => {
-    setLinks((prevLinks) => prevLinks.filter((link) => link.id !== id));
-  };
-
+export default function Home({ links }: HomeProps) {
   return (
-    <div className="max-w-80 mx-auto pt-24">
-      <LinkList links={links} isLoading={isExecuting} onDelete={handleDelete} />
-      <AddLink onAdd={handleAddLink} />
-    </div>
+    <LinksProvider links={links}>
+      <div className="sm:max-w-80 sm:mx-auto pt-24">
+        <LinkList />
+        <AddLink />
+      </div>
+
+      <SignOutButton />
+    </LinksProvider>
   );
 }
+
+const SignOutButton = () => (
+  <div className="fixed sm:bottom-4 sm:top-auto right-4 top-4">
+    <ClerkSignOutButton>
+      <Button variant="secondary" className="text-neutral-500">
+        Sign Out
+      </Button>
+    </ClerkSignOutButton>
+  </div>
+);

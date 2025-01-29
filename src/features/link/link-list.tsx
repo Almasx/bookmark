@@ -3,13 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { LinkCard } from "./link-card";
 import { LoadingLinkCard } from "./link-card.loading";
-import type { LinkWithTags } from "~/lib/types";
-
-interface LinkListProps {
-  links: LinkWithTags[];
-  isLoading: boolean;
-  onDelete: (id: string) => void;
-}
+import { useLinks } from "./link-store";
 
 const TRANSITION = { type: "spring", duration: 0.5, bounce: 0.4 };
 const ANIMATION_VARIANTS = {
@@ -26,11 +20,14 @@ const ANIMATION_VARIANTS = {
   },
 };
 
-export const LinkList = ({ links, isLoading, onDelete }: LinkListProps) => {
+export const LinkList = () => {
+  const links = useLinks((state) => state.links);
+  const isAddingLink = useLinks((state) => state.status === "adding_link");
+
   return (
-    <div className="flex gap-1 flex-col">
+    <div className="flex gap-1 flex-col sm:mx-0 mx-4">
       <AnimatePresence mode="popLayout">
-        {isLoading && (
+        {isAddingLink && (
           <motion.div
             key="loading"
             variants={ANIMATION_VARIANTS}
@@ -54,7 +51,7 @@ export const LinkList = ({ links, isLoading, onDelete }: LinkListProps) => {
               delay: index * 0.01,
             }}
           >
-            <LinkCard {...link} onDelete={onDelete} />
+            <LinkCard {...link} />
           </motion.div>
         ))}
       </AnimatePresence>

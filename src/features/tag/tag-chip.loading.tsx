@@ -35,7 +35,7 @@ export const TagShipLoading = () => {
       <AnimatePresence mode="popLayout">
         {currentEmojis.map((emoji, index) => (
           <motion.span
-            key={`${emoji}-${index}`}
+            key={`loading-${emoji}-${index}`}
             className="text-2xl -mx-0.5"
             variants={ANIMATION_VARIANTS}
             initial="initial"
