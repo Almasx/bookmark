@@ -40,6 +40,7 @@ model Link {
   tags        Tag[]    
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  isArchived  Boolean  @default(false)
 
   userId      String
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)

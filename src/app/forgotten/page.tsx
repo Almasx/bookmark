@@ -1,6 +1,6 @@
 import { db } from "~/lib/db";
-import Home from "./page.client";
 import { auth } from "@clerk/nextjs/server";
+import Home from "./page.client";
 
 export default async function Page() {
   const { userId, redirectToSignIn } = await auth();
@@ -10,7 +10,7 @@ export default async function Page() {
   const links = await db.link.findMany({
     where: {
       user: { clerkUserId: userId },
-      isArchived: false,
+      isArchived: true,
     },
     include: { tags: true },
   });
