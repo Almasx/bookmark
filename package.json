@@ -24,6 +24,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@t3-oss/env-core": "^0.11.1",
     "@types/jsdom": "^21.1.7",
+    "@vercel/analytics": "^1.4.1",
     "@xstate/react": "^5.0.2",
     "ai": "^4.0.39",
     "class-variance-authority": "^0.7.1",

@@ -3,6 +3,7 @@ import { Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { Toaster } from "~/components/sonner";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -26,6 +27,7 @@ export default function RootLayout({
           {children}
           <Toaster />
         </body>
+        <Analytics />
       </html>
     </ClerkProvider>
   );
