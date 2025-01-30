@@ -38,7 +38,7 @@ const HomeHeader = () => {
           Forgotten links
         </Button>
       </Link>
-      <ClerkSignOutButton>
+      <ClerkSignOutButton redirectUrl="/">
         <Button variant="ghost" className="h-full">
           <LogOut className="w-4 h-4" />
         </Button>
