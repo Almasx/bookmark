@@ -1,16 +1,18 @@
 "use client";
 
 import { ChevronUp } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { Dialog, DialogContent, DialogFooter } from "~/components/dialog";
 import { Button } from "~/components/button";
 import { TextArea } from "~/components/textarea";
-import { isValidUrl } from "./utils";
+import { EVENTS, isValidUrl } from "./utils";
 import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
 import { useLinks } from "./link-store";
 import { addLink as addLinkAction } from "./api.action";
+
+const DEMO_LINK = "https://emilkowal.ski/ui/great-animations";
 
 export const AddLink = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +26,8 @@ export const AddLink = () => {
       if (result?.data) {
         addLink(result.data.link);
         updateStatus("idle");
+        setIsOpen(false);
+        setUrl("");
       }
     },
     onError: (error) => {
@@ -31,6 +35,25 @@ export const AddLink = () => {
       toast.error("Oops! Something broke");
     },
   });
+
+  useEffect(() => {
+    const handleOpenModal = () => {
+      setIsOpen(true);
+    };
+
+    const handleDemoLink = () => {
+      updateStatus("adding_link");
+      execute({ url: DEMO_LINK });
+    };
+
+    window.addEventListener(EVENTS.OPEN_ADD_LINK, handleOpenModal);
+    window.addEventListener(EVENTS.ADD_DEMO_LINK, handleDemoLink);
+
+    return () => {
+      window.removeEventListener(EVENTS.OPEN_ADD_LINK, handleOpenModal);
+      window.removeEventListener(EVENTS.ADD_DEMO_LINK, handleDemoLink);
+    };
+  }, [execute, updateStatus]);
 
   const handleAddLink = () => {
     setIsOpen(true);

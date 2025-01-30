@@ -18,14 +18,13 @@ const buttonVariants = cva(
           "bg-red-500 text-neutral-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-neutral-50 dark:hover:bg-red-900/90",
         outline:
           "border border-neutral-200 bg-white hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-800 dark:hover:text-neutral-50",
-        secondary:
-          "bg-neutral-100 text-neutral-900 hover:bg-neutral-200/80 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-800/80",
+        secondary: "text-neutral-600 bg-neutral-200/80",
         ghost:
-          "hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50",
+          "text-neutral-400 hover:text-neutral-500 bg-neutral-100 hover:bg-neutral-200/80 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-800/80",
         link: "text-neutral-900 underline-offset-4 hover:underline dark:text-neutral-50",
       },
       size: {
-        default: "px-2 sm:py-1  py-2",
+        default: "sm:px-2 px-3 sm:py-1 py-2",
         sm: "h-6 px-3 py-1",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",

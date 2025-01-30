@@ -4,11 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LinkCard } from "./link-card";
 import { LoadingLinkCard } from "./link-card.loading";
 import { useLinks } from "./link-store";
+import { EmptyState } from "./link-list.empty";
 
 const TRANSITION = { type: "spring", duration: 0.5, bounce: 0.4 };
 const ANIMATION_VARIANTS = {
   initial: { opacity: 0, y: -50 },
-  animate: { opacity: 1, y: 0 },
+  animate: { opacity: 1, y: 0, filter: "blur(0px)" },
   exit: {
     opacity: 0,
     filter: "blur(10px)",
@@ -24,9 +25,23 @@ export const LinkList = () => {
   const links = useLinks((state) => state.links);
   const isAddingLink = useLinks((state) => state.status === "adding_link");
 
+  const showEmptyState = links.length === 0 && !isAddingLink;
+
   return (
     <div className="flex gap-1 flex-col sm:mx-0 mx-4">
       <AnimatePresence mode="popLayout">
+        {showEmptyState && (
+          <motion.div
+            key="empty"
+            variants={ANIMATION_VARIANTS}
+            initial="exit"
+            animate="animate"
+            exit="exit"
+            transition={TRANSITION}
+          >
+            <EmptyState />
+          </motion.div>
+        )}
         {isAddingLink && (
           <motion.div
             key="loading"

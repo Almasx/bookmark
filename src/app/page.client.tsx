@@ -28,18 +28,12 @@ const HomeHeader = () => {
   return (
     <div className="flex justify-between h-8 mb-4 sm:mb-8 mx-4 sm:mx-0">
       <Link href="/forgotten" prefetch={true}>
-        <Button
-          variant="secondary"
-          className="text-neutral-400 hover:text-neutral-500 h-full hover:after:content-['→']"
-        >
+        <Button variant="ghost" className="h-full hover:after:content-['→']">
           Forgotten links
         </Button>
       </Link>
       <ClerkSignOutButton>
-        <Button
-          variant="secondary"
-          className="text-neutral-400 hover:text-neutral-500 h-full"
-        >
+        <Button variant="ghost" className="h-full">
           <LogOut className="w-4 h-4" />
         </Button>
       </ClerkSignOutButton>

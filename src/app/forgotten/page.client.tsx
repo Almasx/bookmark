@@ -25,10 +25,7 @@ const ForgottenHeader = () => {
   return (
     <div className="flex justify-between h-8 mb-8">
       <Link href="/" prefetch={true}>
-        <Button
-          variant="secondary"
-          className="text-neutral-400 hover:text-neutral-500 h-full hover:before:content-['←']"
-        >
+        <Button variant="ghost" className="h-full hover:before:content-['←']">
           Back to home
         </Button>
       </Link>
