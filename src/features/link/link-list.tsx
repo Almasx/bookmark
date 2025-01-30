@@ -9,7 +9,7 @@ import { EmptyState } from "./link-list.empty";
 const TRANSITION = { type: "spring", duration: 0.5, bounce: 0.4 };
 const ANIMATION_VARIANTS = {
   initial: { opacity: 0, y: -50 },
-  animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+  animate: { opacity: 1, y: 0 },
   exit: {
     opacity: 0,
     filter: "blur(10px)",
@@ -33,11 +33,10 @@ export const LinkList = () => {
         {showEmptyState && (
           <motion.div
             key="empty"
-            variants={ANIMATION_VARIANTS}
-            initial="exit"
-            animate="animate"
-            exit="exit"
-            transition={TRANSITION}
+            initial={{ opacity: 0, filter: "blur(10px)" }}
+            animate={{ opacity: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, filter: "blur(10px)" }}
+            transition={{ duration: 1 }}
           >
             <EmptyState />
           </motion.div>
