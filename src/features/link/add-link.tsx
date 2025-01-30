@@ -11,6 +11,7 @@ import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
 import { useLinks } from "./link-store";
 import { addLink as addLinkAction } from "./api.action";
+import { useIsMobile } from "~/hooks";
 
 const DEMO_LINK = "https://emilkowal.ski/ui/great-animations";
 
@@ -20,6 +21,7 @@ export const AddLink = () => {
 
   const addLink = useLinks((state) => state.addLink);
   const updateStatus = useLinks((state) => state.updateStatus);
+  const isMobile = useIsMobile();
 
   const { execute } = useAction(addLinkAction, {
     onSuccess: (result) => {
@@ -133,6 +135,7 @@ export const AddLink = () => {
               value={""}
               onPaste={handlePaste}
               onChange={handleAddLink}
+              onFocus={isMobile ? handleAddLink : undefined}
             />
           </div>
         </div>
