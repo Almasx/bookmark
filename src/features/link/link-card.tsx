@@ -36,7 +36,6 @@ export const LinkCard = (link: LinkCardProps) => {
               animate={editing ? cardVariants.extended : undefined}
               whileHover={editing ? undefined : cardVariants.extended}
               whileTap={editing ? undefined : cardVariants.extended}
-              onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-between">
                 <div className="space-y-2">
