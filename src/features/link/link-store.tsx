@@ -1,3 +1,5 @@
+"use client";
+
 import { create, useStore } from "zustand";
 import type { Link } from "./types";
 import { createContext, useContext, useRef } from "react";
@@ -66,7 +68,7 @@ export function LinksProvider({ children, ...props }: LinksProviderProps) {
 // Hooks
 
 export function useLinks<T>(selector: (state: LinksState) => T): T {
-  const store = useContext(LinksContext);
-  if (!store) throw new Error("Missing LinksContext.Provider in the tree");
-  return useStore(store, selector);
+  const storeContext = useContext(LinksContext);
+
+  return useStore(storeContext ?? createLinksStore(), selector);
 }

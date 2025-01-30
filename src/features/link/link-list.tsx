@@ -33,7 +33,7 @@ export const LinkList = ({ showEmptyState: showEmpty }: LinkListProps) => {
 
   return (
     <div className="flex gap-1 flex-col sm:mx-0 mx-4">
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode="popLayout" initial={false}>
         {showEmptyState && (
           <motion.div
             key="empty"

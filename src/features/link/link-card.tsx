@@ -30,10 +30,10 @@ export const LinkCard = (link: LinkCardProps) => {
 
           return (
             <motion.div
-              className="max-w-96 bg-white px-3 rounded-3xl group space-y-5"
+              className="max-w-96 bg-white px-3  rounded-3xl group space-y-5"
               layout
               initial={cardVariants.squished}
-              animate={editing ? cardVariants.extended : undefined}
+              animate={editing ? cardVariants.extended : cardVariants.squished}
               whileHover={editing ? undefined : cardVariants.extended}
               whileTap={editing ? undefined : cardVariants.extended}
             >

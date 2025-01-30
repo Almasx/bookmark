@@ -67,7 +67,7 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
             className={cn(
               "absolute z-20 flex gap-2 py-1",
               isMobile
-                ? "bottom-5 fixed inset-x-4 flex-col items-end"
+                ? "bottom-5 fixed inset-x-4 flex-col pointer-events-none"
                 : "top-0 flex-wrap w-16 "
             )}
             initial={{ x: isMobile ? 0 : 16 + bounds.width, opacity: 0 }}
