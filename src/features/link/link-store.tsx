@@ -15,6 +15,7 @@ interface LinksState extends LinksProps {
   updateLink: (link: Partial<Link>) => void;
   deleteLink: (id: string) => void;
   updateStatus: (status: Status) => void;
+  emptyLinks: () => void;
 }
 
 const DEFAULT_LINKS: LinksProps = {
@@ -39,6 +40,7 @@ const createLinksStore = (initialLinks?: Partial<LinksProps>) =>
       })),
     deleteLink: (id) =>
       set((state) => ({ links: state.links.filter((l) => l.id !== id) })),
+    emptyLinks: () => set({ links: [] }),
   }));
 
 type LinksStore = ReturnType<typeof createLinksStore>;

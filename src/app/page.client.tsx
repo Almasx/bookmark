@@ -17,7 +17,7 @@ export default function Home({ links }: HomeProps) {
     <LinksProvider links={links}>
       <div className="sm:max-w-80 sm:mx-auto sm:pt-16 pt-6">
         <HomeHeader />
-        <LinkList />
+        <LinkList showEmptyState={true} />
         <AddLink />
       </div>
     </LinksProvider>
@@ -26,9 +26,9 @@ export default function Home({ links }: HomeProps) {
 
 const HomeHeader = () => {
   return (
-    <div className="flex justify-between h-8 mb-4 sm:mb-8 mx-4 sm:mx-0">
+    <div className="flex justify-between h-8 mb-4 sm:mb-8 mx-2 sm:mx-0">
       <Link href="/forgotten" prefetch={true}>
-        <Button variant="ghost" className="h-full hover:after:content-['→']">
+        <Button variant="ghost" className="h-full sm:hover:after:content-['→']">
           Forgotten links
         </Button>
       </Link>

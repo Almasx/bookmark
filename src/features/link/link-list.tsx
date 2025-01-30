@@ -21,11 +21,15 @@ const ANIMATION_VARIANTS = {
   },
 };
 
-export const LinkList = () => {
+interface LinkListProps {
+  showEmptyState?: boolean;
+}
+
+export const LinkList = ({ showEmptyState: showEmpty }: LinkListProps) => {
   const links = useLinks((state) => state.links);
   const isAddingLink = useLinks((state) => state.status === "adding_link");
 
-  const showEmptyState = links.length === 0 && !isAddingLink;
+  const showEmptyState = links.length === 0 && !isAddingLink && showEmpty;
 
   return (
     <div className="flex gap-1 flex-col sm:mx-0 mx-4">

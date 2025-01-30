@@ -18,3 +18,9 @@ export const deleteLink = actionClient
 
     return { link };
   });
+
+export const flush = actionClient.action(async () => {
+  await db.link.deleteMany({
+    where: { isArchived: true },
+  });
+});

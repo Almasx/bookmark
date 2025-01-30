@@ -12,6 +12,8 @@ export const Tag = ({ tag, ...props }: TagProps) => (
     {...props}
   >
     {tag.emoji}
-    <span className="text-neutral-500 font-medium leading-4">{tag.title}</span>
+    <span className="text-neutral-500 font-medium leading-4 whitespace-nowrap">
+      {tag.title}
+    </span>
   </motion.div>
 );

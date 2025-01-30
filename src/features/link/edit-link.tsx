@@ -8,6 +8,8 @@ import { useAction } from "next-safe-action/hooks";
 import { updateLink as updateLinkAction } from "~/features/link/api.action";
 import { Link } from "./types";
 import { useLinks } from "./link-store";
+import { useIsMobile } from "~/hooks";
+import { cn } from "~/lib/utils";
 
 interface EditLinkProps {
   link: Link;
@@ -17,6 +19,7 @@ interface EditLinkProps {
 export const EditLink = ({ link, children }: EditLinkProps) => {
   const [editing, setEditing] = useState(false);
   const [ref, bounds] = useMeasure<HTMLDivElement>();
+  const isMobile = useIsMobile();
 
   return (
     <div className="relative" onClick={() => setEditing(true)}>
@@ -50,11 +53,7 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
             key="summary"
             className="absolute z-20 top-0 w-full"
             initial={{ y: 4 + bounds.height, opacity: 0 }}
-            animate={{
-              y: 8 + bounds.height,
-              opacity: 1,
-              transition: { delay: 0.15 },
-            }}
+            animate={{ y: 8 + bounds.height, opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <LinkSummary link={link} />
@@ -65,12 +64,16 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
         {editing && (
           <motion.div
             key="tags"
-            className="absolute z-20 top-0 w-full flex-col flex gap-2 py-1"
-            initial={{ x: 16 + bounds.width, opacity: 0 }}
+            className={cn(
+              "absolute z-20 flex gap-2 py-1",
+              isMobile
+                ? "bottom-5 fixed inset-x-4 flex-col items-end"
+                : "top-0 flex-wrap w-16 "
+            )}
+            initial={{ x: isMobile ? 0 : 16 + bounds.width, opacity: 0 }}
             animate={{
-              x: 12 + bounds.width,
+              x: isMobile ? 0 : 12 + bounds.width,
               opacity: 1,
-              transition: { delay: 0.15 },
             }}
             exit={{ opacity: 0 }}
           >
