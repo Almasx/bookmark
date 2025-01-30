@@ -49,7 +49,7 @@ export const addLink = actionClient
       5. Suggest relevant tags with appropriate emojis (max 5 tags)
 
       Content:
-      ${content}`,
+      ${content.slice(0, 2000)}`,
     });
 
     console.log(`DEBUG: Generated object: ${object}`);
