@@ -36,7 +36,7 @@ export const TagShipLoading = () => {
         {currentEmojis.map((emoji, index) => (
           <motion.span
             key={`loading-${emoji}-${index}`}
-            className="text-2xl -mx-0.5"
+            className="text-2xl -mx-0.5 will-change-transform"
             variants={ANIMATION_VARIANTS}
             initial="initial"
             animate="animate"

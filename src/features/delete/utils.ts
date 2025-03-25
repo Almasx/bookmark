@@ -10,20 +10,20 @@ export const howManyDaysAgo = (date: Date) => {
 
   // If expired
   if (remainingTime <= 0) {
-    return "expired";
+    return "expired" as const;
   }
 
   // Calculate remaining time
   const remainingDays = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
   if (remainingDays > 0) {
-    return `${remainingDays}d`;
+    return `${remainingDays}d` as const;
   }
 
   const remainingHours = Math.floor(remainingTime / (1000 * 60 * 60));
   if (remainingHours > 0) {
-    return `${remainingHours}h`;
+    return `${remainingHours}h` as const;
   }
 
   const remainingMinutes = Math.floor(remainingTime / (1000 * 60));
-  return `${remainingMinutes}m`;
+  return `${remainingMinutes}m` as const;
 };

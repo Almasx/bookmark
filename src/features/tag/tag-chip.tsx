@@ -2,6 +2,7 @@ import type { Tag } from "@prisma/client";
 import { motion } from "motion/react";
 import { AnimatePresence } from "motion/react";
 import { Tags as TagIcon } from "lucide-react";
+import { cn } from "~/lib/utils";
 
 interface TagChipProps {
   tags: Tag[];
@@ -32,11 +33,12 @@ export const TagChip = ({ tags, id, variant = "primary" }: TagChipProps) => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 40 }}
-              className={`-mx-1 ${
+              className={cn(
+                "-mx-1 will-change-transform",
                 index % 2 === 0
                   ? "rotate-6 group-hover:-rotate-6"
                   : "-rotate-6 group-hover:rotate-6"
-              } duration-100`}
+              )}
             >
               {tag.emoji}
             </motion.span>
@@ -44,7 +46,7 @@ export const TagChip = ({ tags, id, variant = "primary" }: TagChipProps) => {
 
         {variant === "condensed" && (
           <motion.span
-            className="flex items-center gap-x-1 text-neutral-500"
+            className="flex items-center will-change-transform gap-x-1 text-neutral-500"
             transition={TRANSITION}
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}

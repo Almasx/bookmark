@@ -20,6 +20,12 @@ export const DeleteChip = ({ link }: DeleteChipProps) => {
 
   const { execute } = useAction(deleteLinkAction);
 
+  if (daysAgo === "expired") {
+    execute({ id: link.id });
+
+    deleteLink(link.id);
+  }
+
   const handleDelete = async (e: React.MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
     execute({ id: link.id });
@@ -41,7 +47,7 @@ export const DeleteChip = ({ link }: DeleteChipProps) => {
     >
       <span
         className={cn(
-          " whitespace-nowrap  duration-200 ease-in-out peer absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2",
+          "whitespace-nowrap duration-200 ease-in-out peer absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2",
           active && "text-white -top-1/2"
         )}
       >
