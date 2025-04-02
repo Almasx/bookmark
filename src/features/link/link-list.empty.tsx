@@ -1,5 +1,5 @@
 import { Button } from "~/components/button";
-import { addDemoLink, openAddLinkModal } from "./utils";
+import { addDemoLink } from "./utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
@@ -47,9 +47,7 @@ export const EmptyState = () => {
         <Button variant="primary" onClick={addDemoLink}>
           Demo
         </Button>
-        <Button variant="secondary" onClick={openAddLinkModal}>
-          Paste a link
-        </Button>
+        <Button variant="secondary">Ctrl + V</Button>
       </div>
     </div>
   );

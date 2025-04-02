@@ -20,7 +20,7 @@ export const TagChip = ({ tags, id, variant = "primary" }: TagChipProps) => {
   const displayEmojis = tags.slice(0, 3).map((tag) => tag);
 
   return (
-    <div className="chip px-2 w-12 duration-100 gap-x-1 overflow-hidden">
+    <div className="chip px-2 w-[50px] duration-100 gap-x-1 overflow-hidden">
       <AnimatePresence mode="popLayout" initial={false}>
         {variant === "primary" &&
           displayEmojis.map((tag, index) => (

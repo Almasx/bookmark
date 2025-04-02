@@ -8,6 +8,7 @@ import { deleteLink as deleteLinkAction } from "./api.action";
 import { useLinks } from "../link/link-store";
 import { useState } from "react";
 import { cn } from "~/lib/utils";
+import { useMount } from "~/hooks/useMount";
 
 interface DeleteChipProps {
   link: Link;
@@ -17,12 +18,12 @@ export const DeleteChip = ({ link }: DeleteChipProps) => {
   const daysAgo = howManyDaysAgo(new Date(link.createdAt));
   const deleteLink = useLinks((state) => state.deleteLink);
   const [active, setActive] = useState(false);
+  const mounted = useMount();
 
   const { execute } = useAction(deleteLinkAction);
 
-  if (daysAgo === "expired") {
+  if (daysAgo === "expired" && mounted) {
     execute({ id: link.id });
-
     deleteLink(link.id);
   }
 

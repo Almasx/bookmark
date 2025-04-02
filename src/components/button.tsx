@@ -10,7 +10,7 @@ import { HTMLMotionProps } from "motion/react";
 import { Spinner } from "./spinner";
 
 const buttonVariants = cva(
-  "inline-flex overflow-hidden duration-200 items-center justify-center gap-2 whitespace-nowrap rounded-xl sm:rounded-[10px] sm:text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-neutral-100 disabled:text-neutral-400 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300",
+  "inline-flex duration-200 items-center justify-center gap-2 px-3 py-1 whitespace-nowrap rounded-xl font-medium ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-neutral-100 disabled:text-neutral-400 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300",
   {
     variants: {
       variant: {
@@ -26,39 +26,29 @@ const buttonVariants = cva(
           "text-neutral-400 hover:text-neutral-500 bg-neutral-100 hover:bg-neutral-200/80 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-800/80",
         link: "text-neutral-900 underline-offset-4 hover:underline dark:text-neutral-50",
       },
-      size: {
-        default: "sm:px-2 px-3 sm:py-1 py-2",
-        sm: "h-6 px-3 py-1",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
-      },
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
     },
   }
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  extends VariantProps<typeof buttonVariants>,
+    HTMLMotionProps<"button"> {
   asChild?: boolean;
   loading?: boolean;
   loadingText?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { className, variant, size, asChild = false, loading = false, ...props },
-    ref
-  ) => {
+  ({ className, variant, asChild = false, loading = false, ...props }, ref) => {
     if (asChild) {
       return (
         <Slot
-          className={cn(buttonVariants({ variant, size, className }))}
+          className={cn(buttonVariants({ variant, className }))}
           ref={ref}
-          {...props}
+          {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
         />
       );
     }
@@ -76,14 +66,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <motion.button
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant }), className)}
         ref={ref}
-        {...(props as HTMLMotionProps<"button">)}
+        {...props}
       >
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span
             transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-            className="flex items-center justify-center gap-2"
+            className={cn("flex items-center justify-center gap-2")}
             initial={{ opacity: 0, y: -25, filter: "blur(5px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, y: 25, filter: "blur(5px)" }}

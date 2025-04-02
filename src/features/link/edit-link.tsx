@@ -47,16 +47,16 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
           />
         )}
 
-        {/* Summary */}
+        {/* Note */}
         {editing && (
           <motion.div
-            key="summary"
+            key="note"
             className="absolute z-20 top-0 w-full"
             initial={{ y: 4 + bounds.height, opacity: 0 }}
             animate={{ y: 8 + bounds.height, opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <LinkSummary link={link} />
+            <LinkNote link={link} />
           </motion.div>
         )}
 
@@ -87,11 +87,11 @@ export const EditLink = ({ link, children }: EditLinkProps) => {
   );
 };
 
-interface LinkSummaryProps {
+interface LinkNoteProps {
   link: Link;
 }
 
-const LinkSummary = ({ link }: LinkSummaryProps) => {
+const LinkNote = ({ link }: LinkNoteProps) => {
   const [summary, setSummary] = useState(link?.summary || "");
 
   const { execute } = useAction(updateLinkAction);
@@ -125,7 +125,7 @@ const LinkSummary = ({ link }: LinkSummaryProps) => {
     <div className="bg-white p-3 pt-[10px] rounded-3xl w-full">
       <p className="chip px-2 w-fit text-neutral-500 mb-2 text-sm">Summary</p>
       <TextArea
-        value={summary}
+        value={`${link.summary}`}
         onChange={handleChange}
         onPaste={handlePaste}
         onBlur={handleBlur}
